@@ -19,7 +19,7 @@ Duration: Week 2
 Sprint Goal
 To implement the core functionality of the Inspire Car Hire Management System using the designed structure from Sprint 1.
 Tasks Completed
-Implemented the Car class with required attributes (ID, brand, price, location, availability)
+Implemented the Car class with required attributes (Id, Make, Model, Registration, PricePerDay, Seats, IsAvailable)
 Developed the Node class for BST structure
 Implemented the Binary Search Tree (BST)
 Insert operation

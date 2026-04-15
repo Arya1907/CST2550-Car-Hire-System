@@ -9,7 +9,7 @@ The Car class represents the main entity of the Inspire Car Hire Management Syst
 
 Each car object will store detailed information about a vehicle available for rental. 
 
-The Car objects will be stored inside a custom Binary Search Tree (BST), where CarID will act as the unique key.
+The Car objects will be stored inside a custom Binary Search Tree (BST), where PricePerDay acts as the ordering key to support price-range search.
 
 ---
 
@@ -28,10 +28,11 @@ The Car class is responsible for:
 
 Each Car object will contain the following attributes:
 
-- CarID (int) – Unique identifier
-- Brand (string)
+- Id (int) – Unique identifier
+- Make (string)
 - Model (string)
-- PricePerDay (double)
+- Registration (string)
+- PricePerDay (decimal)
 - Seats (int)
 - IsAvailable (bool)
 
@@ -67,7 +68,7 @@ The Car object will be stored inside BST nodes.
 
 BST comparison will be done using:
 
-CarID
+PricePerDay
 
 This ensures:
 
@@ -80,10 +81,11 @@ This ensures:
 ## 7. Example Structure (Conceptual)
 
 Car
-    CarID = 101
-    Brand = "Toyota"
+    Id = 1
+    Make = "Toyota"
     Model = "Corolla"
-    PricePerDay = 80
+    Registration = "AB12CDE"
+    PricePerDay = 35.00
     Seats = 5
     IsAvailable = true
 

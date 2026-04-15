@@ -9,7 +9,7 @@ The Inspire Car Hire Management System requires an efficient way to store, searc
 
 To achieve this, a **custom Binary Search Tree (BST)** will be implemented instead of using built-in data structures.
 
-The BST will store **Car objects**, using the CarID as the unique key for ordering.
+The BST will store **Car objects**, using PricePerDay as the key for ordering to support efficient price-range searching.
 
 This ensures efficient searching and management of vehicles in the system.
 
@@ -57,12 +57,12 @@ Node
 
 The BST will use:
 
-CarID (integer)
+PricePerDay (decimal)
 
 Rules:
-- If new CarID < current node CarID → go LEFT
-- If new CarID > current node CarID → go RIGHT
-- Duplicate CarIDs are not allowed
+- If new PricePerDay < current node PricePerDay → go LEFT
+- If new PricePerDay >= current node PricePerDay → go RIGHT
+- Cars with equal prices are placed in the right subtree
 
 ---
 
@@ -75,9 +75,8 @@ Used by Admin to add new cars to the system.
 
 Logic:
 - If tree is empty → new node becomes root.
-- If CarID is smaller → insert in left subtree.
-- If CarID is larger → insert in right subtree.
-- If duplicate → reject insertion.
+- If PricePerDay is smaller → insert in left subtree.
+- If PricePerDay is greater or equal → insert in right subtree.
 
 Pseudo Code:
 
@@ -87,14 +86,11 @@ FUNCTION Insert(node, car)
         CREATE new node with car
         RETURN new node
 
-    IF car.CarID < node.Car.CarID
+    IF car.PricePerDay < node.Car.PricePerDay
         node.Left = Insert(node.Left, car)
 
-    ELSE IF car.CarID > node.Car.CarID
-        node.Right = Insert(node.Right, car)
-
     ELSE
-        PRINT "Duplicate CarID not allowed"
+        node.Right = Insert(node.Right, car)
 
     RETURN node
 
@@ -104,30 +100,30 @@ FUNCTION Insert(node, car)
 
 Purpose:
 Used by:
-- Customer to search for a car
-- Staff to check availability
+- Customer to search for cars within a price range
 - Admin to verify records
 
 Logic:
-- Compare CarID
-- Traverse left or right accordingly
-- Return car if found
+- Compare node PricePerDay against min and max bounds
+- Traverse left if node price is greater than min (smaller prices may exist)
+- Traverse right if node price is less than max (larger prices may exist)
+- Collect matching nodes into results
 
 Pseudo Code:
 
-FUNCTION Search(node, carID)
+FUNCTION SearchByPriceRange(node, min, max, results)
 
     IF node IS NULL
-        RETURN NULL
+        RETURN
 
-    IF carID == node.Car.CarID
-        RETURN node
+    IF node.Car.PricePerDay > min
+        SearchByPriceRange(node.Left, min, max, results)
 
-    IF carID < node.Car.CarID
-        RETURN Search(node.Left, carID)
+    IF node.Car.PricePerDay >= min AND node.Car.PricePerDay <= max
+        results.Add(node.Car)
 
-    ELSE
-        RETURN Search(node.Right, carID)
+    IF node.Car.PricePerDay < max
+        SearchByPriceRange(node.Right, min, max, results)
 
 ---
 
@@ -144,18 +140,22 @@ Three Cases:
 
 Pseudo Code (Simplified):
 
-FUNCTION Delete(node, carID)
+FUNCTION Delete(node, car)
 
     IF node IS NULL
         RETURN NULL
 
-    IF carID < node.Car.CarID
-        node.Left = Delete(node.Left, carID)
+    IF car.PricePerDay < node.Car.PricePerDay
+        node.Left = Delete(node.Left, car)
 
-    ELSE IF carID > node.Car.CarID
-        node.Right = Delete(node.Right, carID)
+    ELSE IF car.PricePerDay > node.Car.PricePerDay
+        node.Right = Delete(node.Right, car)
 
     ELSE
+        IF node.Car.Id != car.Id
+            node.Right = Delete(node.Right, car)
+            RETURN node
+
         IF node has no children
             RETURN NULL
 
@@ -165,7 +165,7 @@ FUNCTION Delete(node, carID)
         IF node has two children
             successor = FindMin(node.Right)
             node.Car = successor.Car
-            node.Right = Delete(node.Right, successor.CarID)
+            node.Right = Delete(node.Right, successor.Car)
 
     RETURN node
 
@@ -178,7 +178,7 @@ To display cars (View Cars option), the system will use:
 Inorder Traversal
 
 Why?
-Because it prints cars in sorted order of CarID.
+Because it prints cars in ascending order of PricePerDay.
 
 Pseudo Code:
 
