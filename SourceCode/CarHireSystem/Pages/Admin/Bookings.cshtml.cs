@@ -143,3 +143,4 @@ public class BookingsModel : PageModel
 
         Cars = await _db.Cars.ToArrayAsync();
     }
+}

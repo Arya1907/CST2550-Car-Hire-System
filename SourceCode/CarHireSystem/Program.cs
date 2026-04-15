@@ -104,6 +104,10 @@ using (var scope = app.Services.CreateScope())
     foreach (var car in db.Cars.ToArray())
         bst.Insert(car);
 
+    // Rehydrate HashTable with all active bookings so lookups work after a restart
+    foreach (var booking in db.Bookings.Where(b => b.IsActive).ToArray())
+        hashTable.Insert(booking);
+
     // Seed roles
     foreach (var role in new[] { "Admin", "Customer" })
     {

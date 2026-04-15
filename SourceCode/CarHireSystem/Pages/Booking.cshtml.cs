@@ -5,6 +5,7 @@ using CarHireSystem.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Stripe;
 
 namespace CarHireSystem.Pages;
@@ -175,8 +176,14 @@ public class BookingModel : PageModel
             return;
         }
 
+        // Generate a unique BookingID — retry until an unused ID is found
+        int bookingId;
+        do { bookingId = Random.Shared.Next(10000, 99999); }
+        while (_bookingService.GetBooking(bookingId) != null
+            || await _db.Bookings.AnyAsync(b => b.BookingID == bookingId));
+
         var booking = new Booking(
-            new Random().Next(1000, 9999),
+            bookingId,
             car.Id,
             CustomerName,
             CustomerEmail,

@@ -147,13 +147,11 @@ public class CarsModel : PageModel
             return RedirectToPage();
         }
 
+        // Remove from BST first (while we still have the car's price for traversal)
+        _bst.Delete(car);
+
         _db.Cars.Remove(car);
         await _db.SaveChangesAsync();
-
-        // Rebuild BST without the deleted car
-        _bst.Clear();
-        foreach (var c in await _db.Cars.ToArrayAsync())
-            _bst.Insert(c);
 
         TempData["Success"] = $"{car.Make} {car.Model} deleted.";
         return RedirectToPage();
