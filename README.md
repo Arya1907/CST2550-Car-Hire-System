@@ -1,3 +1,4 @@
+[EASYHIRE CAR SYSTEM.pptx     (PRESENTATION).pptx](https://github.com/user-attachments/files/26796443/EASYHIRE.CAR.SYSTEM.pptx.PRESENTATION.pptx)
 # EasyHire Car Hire System
 
 A web-based car hire management system built with ASP.NET Core (.NET 10), Razor Pages, Entity Framework Core, and Azure SQL. Developed for CST2550.
