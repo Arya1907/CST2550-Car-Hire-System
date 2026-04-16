@@ -17,10 +17,10 @@ This ensures efficient searching and management of vehicles in the system.
 
 The BST was chosen because:
 
-- It provides faster searching compared to linear lists.
-- It allows efficient insertion and deletion.
-- It supports ordered data storage.
-- It demonstrates understanding of custom data structures (coursework requirement).
+- it provides faster searching compared to linear lists.
+- it allows efficient insertion and deletion.
+- it supports ordered data storage.
+- it demonstrates understanding of custom data structures (coursework requirement).
 
 Time Complexity (Average Case):
 - Search: O(log n)
